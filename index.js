@@ -1,18 +1,30 @@
 require('dotenv').config()
 
 const config = require('./config')
-const { getAppliancesFromList } = require('./src/searchScraping')
+const { getProductsFromSearch } = require('./src/searchScraping')
+const { Product } = require('./src/models/Product')
+const { sequelize } = require('./src/db')
+const { removeDuplicates } = require('./src/utis')
 
-const getInfo = async () => {
-  const smallAppliances = await getAppliancesFromList(
+const syncProducts = async () => {
+  const smallAppliances = await getProductsFromSearch(
     `${config.SCRAPING_URL}/search/small-appliances`
   )
-  const dishwashers = await getAppliancesFromList(
+  const dishwashers = await getProductsFromSearch(
     `${config.SCRAPING_URL}/search/dishwashers`
   )
-  console.log(
-    `DONE: Loaded ${smallAppliances.length + dishwashers.length} products`
-  )
+
+  const products = removeDuplicates('id', [...smallAppliances, ...dishwashers])
+  await Product.destroy({ where: {} })
+  await Product.bulkCreate(products)
+  console.log(`SAVED ${products.length} PRODUCTS`)
 }
 
-getInfo()
+syncProducts()
+  .then(() => {
+    sequelize.close()
+  })
+  .catch(e => {
+    console.log('ERROR loading products')
+    console.error(e)
+  })

@@ -1,6 +1,7 @@
-CREATE TABLE small_appliances(
-  ID INT PRIMARY KEY NOT NULL,
+CREATE TABLE products(
+  id TEXT PRIMARY KEY NOT NULL,
   name TEXT NOT NULL,
   image TEXT,
-  price TEXT NOT NULL
+  price TEXT NOT NULL,
+  type TEXT NOT NULL
 )

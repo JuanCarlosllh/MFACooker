@@ -1,12 +1,15 @@
 const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize(
-  'LansweeperMFA',
+  'pxrgzxth',
   'pxrgzxth',
   'SOUXmJuTK_u_02-S1HebeTTzJIYUu2PT',
   {
     host: 'baasu.db.elephantsql.com',
     dialect: 'postgres',
+    define: {
+      timestamps: false
+    },
 
     pool: {
       max: 5,
@@ -14,7 +17,8 @@ const sequelize = new Sequelize(
       acquire: 30000,
       idle: 10000
     },
-    operatorsAliases: false
+    operatorsAliases: false,
+    logging: false
   }
 )
 
