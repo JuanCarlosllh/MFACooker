@@ -1,4 +1,5 @@
 require('dotenv').config()
+const cron = require('node-cron')
 
 const config = require('./config')
 const { getProductsFromSearch } = require('./src/searchScraping')
@@ -20,11 +21,15 @@ const syncProducts = async () => {
   console.log(`SAVED ${products.length} PRODUCTS`)
 }
 
-syncProducts()
-  .then(() => {
-    sequelize.close()
-  })
-  .catch(e => {
+const executeSync = () => {
+  syncProducts().catch(e => {
     console.log('ERROR loading products')
     console.error(e)
   })
+}
+
+executeSync()
+cron.schedule('* * * * *', () => {
+  console.log('Started products sync')
+  executeSync()
+})
