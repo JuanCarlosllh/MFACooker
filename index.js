@@ -4,7 +4,6 @@ const cron = require('node-cron')
 const config = require('./config')
 const { getProductsFromSearch } = require('./src/searchScraping')
 const { Product } = require('./src/models/Product')
-const { sequelize } = require('./src/db')
 const { removeDuplicates } = require('./src/utis')
 
 const syncProducts = async () => {
@@ -29,7 +28,7 @@ const executeSync = () => {
 }
 
 executeSync()
-cron.schedule('* * * * *', () => {
+cron.schedule(config.CRONTAB, () => {
   console.log('Started products sync')
   executeSync()
 })

@@ -1,11 +1,13 @@
 const Sequelize = require('sequelize')
 
+const config = require('../config')
+
 const sequelize = new Sequelize(
-  'pxrgzxth',
-  'pxrgzxth',
-  'SOUXmJuTK_u_02-S1HebeTTzJIYUu2PT',
+  config.DB_NAME,
+  config.DB_USER,
+  config.DB_PASS,
   {
-    host: 'baasu.db.elephantsql.com',
+    host: config.DB_HOST,
     dialect: 'postgres',
     define: {
       timestamps: false
