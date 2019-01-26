@@ -36,12 +36,14 @@ const getProductsFromSearch = url =>
           .split('/')
 
         const name = cheerio('h4 a', el).text()
-        const price = cheerio('h3', el).text()
+        const price = cheerio('h3', el)
+          .text()
+          .replace('€', '')
         const image = cheerio('.product-image img', el).attr('src')
         return {
           id: `${id[id.length - 1]}`,
           name,
-          price,
+          price: parseFloat(price),
           image,
           type
         }
